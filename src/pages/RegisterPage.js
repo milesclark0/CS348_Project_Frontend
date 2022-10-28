@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { StatusCodes } from "http-status-codes";
-import { Link } from "react-router-dom";
 import * as api from "../api/api";
 import CustomerProfile from "../objects/CustomerProfile";
 import { useNavigate } from "react-router-dom";
@@ -8,7 +7,12 @@ import { useNavigate } from "react-router-dom";
 const LoginPage = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPass] = useState("");
+  const [name, setName] = useState("");
+  const [address, setAddress] = useState("");
+  const [phone, setPhone] = useState("");
+  const [birth_date, setBirthDate] = useState("");
   const [errMsg, setErrMsg] = useState("");
+
   const navigate = useNavigate();
   const isLoggedIn = props.isLoggedIn;
 
@@ -17,14 +21,22 @@ const LoginPage = (props) => {
     setErrMsg("");
   }, [username, password]);
 
-  const login = async (e) => {
+  const register = async (e) => {
     e.preventDefault();
     if (isLoggedIn) {
+      //TODO route to homepage
       return;
     }
 
     //Calls api
-    let response = await api.login(username, password);
+    let response = await api.register(
+      username,
+      password,
+      name,
+      address,
+      phone,
+      birth_date
+    );
     let data = await response.json();
     if (response.status === StatusCodes.OK) {
       //Saves User Info
@@ -41,7 +53,7 @@ const LoginPage = (props) => {
       props.loginChange(CustomerProfile.isLoggedIn());
       navigate("/");
     } else {
-      setErrMsg(data.message);
+      setErrMsg(JSON.stringify(data));
       console.log(data);
     }
   };
@@ -60,15 +72,36 @@ const LoginPage = (props) => {
           id="passwordTextBox"
           type={"password"}
           placeholder="password"
-          autoComplete="on"
+          autoComplete="new-password"
           onChange={(e) => setPass(e.target.value)}
         ></input>
-        <button onClick={(e) => login(e)}>login</button>
-        <Link to="/register">
-          <button>Register</button>
-        </Link>
+        <input
+          id="nameTextBox"
+          type={"text"}
+          placeholder="name"
+          onChange={(e) => setName(e.target.value)}
+        ></input>
+        <input
+          id="addressTextBox"
+          type={"text"}
+          placeholder="address"
+          onChange={(e) => setAddress(e.target.value)}
+        ></input>
+        <input
+          id="phoneTextBox"
+          type={"text"}
+          placeholder="phone"
+          max={10}
+          onChange={(e) => setPhone(e.target.value)}
+        ></input>
+        <input
+          id="birthDateTextBox"
+          type={"date"}
+          onChange={(e) => setBirthDate(e.target.value)}
+        ></input>
+        <button onClick={(e) => register(e)}>Register</button>
       </form>
-      {errMsg && <div style={{ color: "Red" }}>{errMsg}</div>}
+      {errMsg && !isLoggedIn && <div style={{ color: "Red" }}>{errMsg}</div>}
     </div>
   );
 };
