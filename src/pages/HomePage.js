@@ -1,16 +1,32 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import CustomerProfile from "../objects/CustomerProfile";
 import "./HomePage.css"
+import * as api from "../api/api"
+import { StatusCodes } from "http-status-codes";
 
 const HomePage = (props) => {
   const isLoggedIn = props.isLoggedIn;
+  const [orders, setOrders] = useState([])
 
+  useEffect(() => {
+    const getOrders = async () => {
+    let response = await api.getOrders(CustomerProfile.getID())
+    let data = await response.json();
+    if (response.status === StatusCodes.OK) {
+      //Saves User Info
+      console.log(data);
+      setOrders(data)
+    }
+  }
+    getOrders()
+  }, []); 
+  console.log(orders)
   return (
     <div>
       {isLoggedIn && 
       <div>
         <div class="centeredText">
-          Logged in as {CustomerProfile.getUsername()}
+          Logged in as {CustomerProfile.getUsername()} with id {CustomerProfile.getID()}
         </div>
         <table class="styled-table">
           <tr>

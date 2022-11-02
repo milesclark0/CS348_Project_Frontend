@@ -1,4 +1,5 @@
 var CustomerProfile = (function () {
+  var id = -1;
   var username = "";
   var name = "";
   var address = "";
@@ -7,6 +8,9 @@ var CustomerProfile = (function () {
   var points = -1;
   var creation_date = "";
 
+  var getID = function () {
+    return id;
+  };
   var getUsername = function () {
     return username;
   };
@@ -30,6 +34,7 @@ var CustomerProfile = (function () {
   };
   var isLoggedIn = function () {
     return (
+      id !== -1 &&
       username !== "" &&
       name !== "" &&
       address !== "" &&
@@ -40,6 +45,9 @@ var CustomerProfile = (function () {
     );
   };
 
+  var setID = function (new_ID) {
+    id = new_ID;
+  };
   var setUsername = function (new_username) {
     username = new_username;
   };
@@ -62,6 +70,7 @@ var CustomerProfile = (function () {
     creation_date = new_creation_date;
   };
   var setAll = function (
+    new_ID,
     new_username,
     new_name,
     new_address,
@@ -70,6 +79,7 @@ var CustomerProfile = (function () {
     new_points,
     new_creation_date
   ) {
+    id = new_ID;
     username = new_username;
     name = new_name;
     address = new_address;
@@ -81,6 +91,7 @@ var CustomerProfile = (function () {
   };
 
   var clear = function () {
+    id = -1
     username = "";
     name = "";
     address = "";
@@ -91,6 +102,7 @@ var CustomerProfile = (function () {
   };
 
   return {
+    getID: getID,
     getUsername: getUsername,
     getName: getName,
     getAddress: getAddress,
@@ -100,6 +112,7 @@ var CustomerProfile = (function () {
     getCreationDate: getCreationDate,
     isLoggedIn: isLoggedIn,
 
+    setID: setID,
     setUsername: setUsername,
     setName: setName,
     setAddress: setAddress,

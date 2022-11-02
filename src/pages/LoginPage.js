@@ -28,7 +28,9 @@ const LoginPage = (props) => {
     let data = await response.json();
     if (response.status === StatusCodes.OK) {
       //Saves User Info
+      console.log(data);
       CustomerProfile.setAll(
+        data.id,
         data.username,
         data.name,
         data.address,
