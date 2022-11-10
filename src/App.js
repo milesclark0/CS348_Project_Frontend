@@ -22,12 +22,16 @@ function App() {
           <Route
             path="/"
             exact
-            element={<HomePage loginChange={loginChange} isLoggedIn={isLoggedIn} />}
+            element={
+              <HomePage loginChange={loginChange} isLoggedIn={isLoggedIn} />
+            }
           />
           <Route
             path="/login"
             exact
-            element={<LoginPage loginChange={loginChange} isLoggedIn={isLoggedIn} />}
+            element={
+              <LoginPage loginChange={loginChange} isLoggedIn={isLoggedIn} />
+            }
           />
           <Route
             path="/register"

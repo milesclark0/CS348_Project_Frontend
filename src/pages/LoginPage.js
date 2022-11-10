@@ -4,6 +4,10 @@ import { Link } from "react-router-dom";
 import * as api from "../api/api";
 import CustomerProfile from "../objects/CustomerProfile";
 import { useNavigate } from "react-router-dom";
+import { Box, Stack } from "@mui/system";
+import { Avatar, Button, FormControlLabel, InputAdornment, TextField, Typography } from "@mui/material";
+import { LockOutlined } from "@mui/icons-material";
+
 
 const LoginPage = (props) => {
   const [username, setUsername] = useState("");
@@ -49,29 +53,62 @@ const LoginPage = (props) => {
   };
 
   return (
-    <div>
-      Enter Your Credentials
-      <form>
-        <input
-          id="usernameTextBox"
-          type={"text"}
-          placeholder="username"
+    <Box
+      sx={{
+        marginTop: 8,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+        <LockOutlined />
+      </Avatar>
+      <Typography component="h1" variant="h5">
+        Sign in
+      </Typography>
+      <Box component="form" onSubmit={login} noValidate sx={{ mt: 1 }}>
+        <TextField
+          margin="normal"
+          required
+          fullWidth
+          id="username"
+          label="Username"
+          autoComplete="username"
+          autoFocus
           onChange={(e) => setUsername(e.target.value)}
-        ></input>
-        <input
-          id="passwordTextBox"
-          type={"password"}
-          placeholder="password"
-          autoComplete="on"
+          error={errMsg !== ""}
+        />
+        <TextField
+          margin="normal"
+          required
+          fullWidth
+          label="Password"
+          type="password"
+          id="password"
+          autoComplete="current-password"
           onChange={(e) => setPass(e.target.value)}
-        ></input>
-        <button onClick={(e) => login(e)}>login</button>
-        <Link to="/register">
-          <button>Register</button>
-        </Link>
-      </form>
+          error={errMsg !== ""}
+        />
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          sx={{ mt: 3, mb: 2 }}
+        >
+          Sign In
+        </Button>
+        <Button
+          href="/register"
+          fullWidth
+          variant="outlined"
+          sx={{ mt: 1, mb: 2 }}
+        >
+          Register
+        </Button>
+      </Box>
       {errMsg && <div style={{ color: "Red" }}>{errMsg}</div>}
-    </div>
+    </Box>
   );
 };
 
