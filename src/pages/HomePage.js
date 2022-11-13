@@ -4,7 +4,17 @@ import "./HomePage.css";
 import * as api from "../api/api";
 import { StatusCodes } from "http-status-codes";
 import { useNavigate } from "react-router-dom";
-
+import {
+  Table,
+  TableBody,
+  TableContainer,
+  TableHead,
+  Paper,
+  TableCell,
+  TableRow,
+  Typography,
+} from "@mui/material";
+import { Box } from "@mui/system";
 
 const HomePage = (props) => {
   const isLoggedIn = props.isLoggedIn;
@@ -17,7 +27,7 @@ const HomePage = (props) => {
     if (!isLoggedIn) {
       navigate("/login");
     }
-  }, []);
+  }, [isLoggedIn, navigate]);
 
   //gets orders from api
   useEffect(() => {
@@ -36,60 +46,45 @@ const HomePage = (props) => {
   }, [isLoggedIn]);
   console.log(orders);
   return (
-    <div>
-      {isLoggedIn && (
-        <div>
-          <div class="centeredText">
-            Logged in as {CustomerProfile.getUsername()} with id{" "}
-            {CustomerProfile.getID()}
-          </div>
-          <table class="styled-table">
-            <tr>
-              <th>Name:</th>
-              <td>{CustomerProfile.getName()}</td>
-            </tr>
-            <tr>
-              <th>Address:</th>
-              <td>{CustomerProfile.getAddress()}</td>
-            </tr>
-            <tr>
-              <th>Phone:</th>
-              <td>{CustomerProfile.getPhone()}</td>
-            </tr>
-            <tr>
-              <th>Points:</th>
-              <td>{CustomerProfile.getPoints()}</td>
-            </tr>
-          </table>
-
-          <div class="centeredText">Order History</div>
-          <table class="styled-table">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Items</th>
-                <th>Order ID</th>
-                <th>Total</th>
-                <th>Driver ID</th>
-                <th>Tip</th>
-                <th>Rating</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>--</td>
-                <td>--</td>
-                <td>--</td>
-                <td>--</td>
-                <td>--</td>
-                <td>--</td>
-                <td>--</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      )}
-    </div>
+    <Box
+      sx={{
+        marginTop: 8,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <Typography variant="h5">Orders</Typography>
+      <TableContainer component={Paper} sx={{ width: "500px" }}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>ID</TableCell>
+              <TableCell>Date</TableCell>
+              <TableCell>Time</TableCell>
+              <TableCell>Total</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {orders.map((order) => (
+              <TableRow
+                key={order.id}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell>{order.id}</TableCell>
+                <TableCell>
+                  {new Date(order.date_time).toDateString()}
+                </TableCell>
+                <TableCell>
+                  {new Date(order.date_time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
+                </TableCell>
+                <TableCell>{order.total}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
   );
 };
 

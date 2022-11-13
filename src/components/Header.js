@@ -18,7 +18,7 @@ const Header = (props) => {
 
   
   return (
-    <AppBar position="static" color="primary">
+    <AppBar position="static" color="primary" sx={{mb: '16px'}}>
       <Toolbar>
         <IconButton size="large" edge="start" color="inherit">
           <HomeIcon />
