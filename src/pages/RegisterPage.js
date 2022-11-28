@@ -41,6 +41,7 @@ const LoginPage = (props) => {
     if (response.status === StatusCodes.OK) {
       //Saves User Info
       CustomerProfile.setAll(
+        data.id,
         data.username,
         data.name,
         data.address,
