@@ -33,3 +33,8 @@ export async function createOrder(order) {
   };
   return await fetch("/api/createOrder/", requestOps);
 }
+
+export async function getSearchCatalog() {
+  const response =  await fetch("/api/getItems")
+  return response;
+}

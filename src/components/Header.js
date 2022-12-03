@@ -1,6 +1,6 @@
 import React from "react";
 import CustomerProfile from "../objects/CustomerProfile";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Toolbar, AppBar, IconButton, Typography, Button } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 
@@ -16,6 +16,9 @@ const Header = (props) => {
     navigate("/login");
   };
 
+  const searchCatalogPageRedirect = () => {
+    navigate("/SearchCatalogPage")
+  }
   
   return (
     <AppBar position="static" color="primary" sx={{mb: '16px'}}>
@@ -26,6 +29,7 @@ const Header = (props) => {
         <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
           OrderThisChris
         </Typography>
+        <Button onClick={searchCatalogPageRedirect} color="inherit">Search Catalog</Button>
         {isLoggedIn && <Button color="inherit" onClick={(e) => logout(e)}>Logout</Button>}
       </Toolbar>
     </AppBar>
