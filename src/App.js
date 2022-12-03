@@ -8,6 +8,7 @@ import CustomerProfile from "./objects/CustomerProfile";
 import { useState } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { themeOptions } from "./objects/themeOptions";
+import TestPage from "./pages/TestPage";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(CustomerProfile.isLoggedIn());
@@ -43,6 +44,16 @@ function App() {
               exact
               element={
                 <RegisterPage
+                  loginChange={loginChange}
+                  isLoggedIn={isLoggedIn}
+                />
+              }
+            />
+            <Route
+              path="/test"
+              exact
+              element={
+                <TestPage
                   loginChange={loginChange}
                   isLoggedIn={isLoggedIn}
                 />
