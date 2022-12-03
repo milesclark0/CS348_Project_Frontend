@@ -41,7 +41,8 @@ const HomePage = (props) => {
   const [successMsg, setSuccessMsg] = useState("");
 
   //TODO: Add useEffect to get items from api
-  const [items, setItems] = useState([]);
+  
+  const [items1, setItems] = useState([]);
 
   const getItems = async () => {
     let response = await api.getSearchCatalog();
@@ -57,6 +58,12 @@ const HomePage = (props) => {
   }, []);
 
   
+  const items = items1.map(t => ({
+    item_id: t.id,
+    name: t.name,
+    price: parseFloat(t.price)
+  }))
+
   const style = {
     position: "absolute",
     top: "50%",
