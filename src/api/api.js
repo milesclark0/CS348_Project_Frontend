@@ -23,3 +23,13 @@ export async function getOrders(customer_id) {
 export async function getRecentOrder(customer_id) {
   return await fetch("/api/getRecentOrder/" + customer_id);
 }
+
+export async function createOrder(order) {
+  console.log(order);
+  const requestOps = {
+    method: "POST",
+    headers: { "content-Type": "application/json" },
+    body: JSON.stringify(order),
+  };
+  return await fetch("/api/createOrder/", requestOps);
+}

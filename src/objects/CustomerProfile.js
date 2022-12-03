@@ -32,6 +32,20 @@ var CustomerProfile = (function () {
   var getCreationDate = function () {
     return creation_date;
   };
+
+  var getObject = function () {
+    return {
+      id: id,
+      username: username,
+      name: name,
+      address: address,
+      phone: phone,
+      birth_date: birth_date,
+      points: points,
+      creation_date: creation_date,
+    };
+  };
+  
   var isLoggedIn = function () {
     return (
       id !== -1 &&
