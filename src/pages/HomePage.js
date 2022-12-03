@@ -41,10 +41,21 @@ const HomePage = (props) => {
   const [successMsg, setSuccessMsg] = useState("");
 
   //TODO: Add useEffect to get items from api
-  const items = [
-    { item_id: 1, name: "Doritos", price: 3.99 },
-    { item_id: 2, name: "Hot fries", price: 2.0 },
-  ];
+  const [items, setItems] = useState([]);
+
+  const getItems = async () => {
+    let response = await api.getSearchCatalog();
+    let data = await response.json();
+    if (response.status === StatusCodes.OK) {
+    //Saves User Info
+        setItems(data)
+    }
+  };
+
+  useEffect(() => {
+      getItems();
+  }, []);
+
   
   const style = {
     position: "absolute",
