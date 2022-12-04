@@ -3,6 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import * as api from "../api/api";
 import CustomerProfile from "../objects/CustomerProfile";
 import { useNavigate } from "react-router-dom";
+import { Box, TextField, Typography, Stack, Button } from "@mui/material";
 
 const LoginPage = (props) => {
   const [username, setUsername] = useState("");
@@ -19,7 +20,7 @@ const LoginPage = (props) => {
   //clears error message on input change
   useEffect(() => {
     setErrMsg("");
-  }, [username, password]);
+  }, [username, password, name, address, phone, birth_date]);
 
   const register = async (e) => {
     e.preventDefault();
@@ -60,50 +61,89 @@ const LoginPage = (props) => {
   };
 
   return (
-    <div>
-      Enter Your Credentials
-      <form>
-        <input
-          id="usernameTextBox"
-          type={"text"}
-          placeholder="username"
-          onChange={(e) => setUsername(e.target.value)}
-        ></input>
-        <input
-          id="passwordTextBox"
-          type={"password"}
-          placeholder="password"
-          autoComplete="new-password"
-          onChange={(e) => setPass(e.target.value)}
-        ></input>
-        <input
-          id="nameTextBox"
-          type={"text"}
-          placeholder="name"
-          onChange={(e) => setName(e.target.value)}
-        ></input>
-        <input
-          id="addressTextBox"
-          type={"text"}
-          placeholder="address"
-          onChange={(e) => setAddress(e.target.value)}
-        ></input>
-        <input
-          id="phoneTextBox"
-          type={"text"}
-          placeholder="phone"
-          max={10}
-          onChange={(e) => setPhone(e.target.value)}
-        ></input>
-        <input
-          id="birthDateTextBox"
-          type={"date"}
-          onChange={(e) => setBirthDate(e.target.value)}
-        ></input>
-        <button onClick={(e) => register(e)}>Register</button>
-      </form>
+    <Box
+      sx={{
+        marginTop: 8,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <Typography component="h1" variant="h5">
+        Enter Your Credentials
+      </Typography>
+      <Box component="form" onSubmit={register} noValidate sx={{ mt: 1 }}>
+        <Stack spacing={2} direction="row">
+          <TextField
+            id="usernameTextBox"
+            required
+            fullWidth
+            label="Username"
+            autoComplete="username"
+            error={errMsg.includes("username")}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <TextField
+            fullWidth
+            id="passwordTextBox"
+            type="password"
+            label="Password"
+            required
+            autoComplete="current-password"
+            onChange={(e) => setPass(e.target.value)}
+            error={errMsg.includes("password")}
+          />
+        </Stack>
+        <Stack spacing={2} direction="row" sx={{mt:1}}>
+          <TextField
+            id="nameTextBox"
+            required
+            label="name"
+            autoComplete="name"
+            fullWidth
+            onChange={(e) => setName(e.target.value)}
+            error={errMsg.includes("name")}
+          />
+          <TextField
+            id="addressTextBox"
+            required
+            fullWidth
+            label="address"
+            onChange={(e) => setAddress(e.target.value)}
+            error={errMsg.includes("address")}
+          />
+        </Stack>
+        <Stack spacing={2} direction="row" sx={{mt:1}}>
+          <TextField
+            id="phoneTextBox"
+            required
+            fullWidth
+            label="phone"
+            max={10}
+            onChange={(e) => setPhone(e.target.value)}
+            error={errMsg.includes("phone")}
+          ></TextField>
+          <TextField
+            required
+            fullWidth
+            id="birthDateTextBox"
+            type={"date"}
+            onChange={(e) => setBirthDate(e.target.value)}
+            error={errMsg.includes("birth_date")}
+          ></TextField>
+        </Stack>
+        <Button
+          sx={{ mt: 1, mb: 2 }}
+          variant="contained"
+          color="secondary"
+          fullWidth
+          onClick={(e) => register(e)}
+        >
+          Register
+        </Button>
+      </Box>
       {errMsg && !isLoggedIn && <div style={{ color: "Red" }}>{errMsg}</div>}
-    </div>
+    </Box>
   );
 };
 

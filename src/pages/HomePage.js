@@ -110,9 +110,14 @@ const HomePage = (props) => {
         onChange={(e, value) => {
           const tempCartItems = [...cartItems];
           tempCartItems[props.index].name = value;
-          tempCartItems[props.index].item_id = items.find(
+          const foundItem = items.find(
             (name) => name.name === value
-          ).item_id;
+          )?.item_id;
+          if (foundItem) {
+            tempCartItems[props.index].item_id = foundItem;
+          } else {
+            return;
+          }
           setCartItems(tempCartItems);
           setTotal(calculateTotal());
         }}

@@ -23,7 +23,7 @@ const Header = (props) => {
   return (
     <AppBar position="static" color="primary" sx={{mb: '16px'}}>
       <Toolbar>
-        <IconButton size="large" edge="start" color="inherit">
+        <IconButton size="large" edge="start" color="inherit" onClick={() => navigate("/")}>
           <HomeIcon />
         </IconButton>
         <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
