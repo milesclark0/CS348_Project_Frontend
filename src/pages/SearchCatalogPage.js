@@ -63,7 +63,7 @@ const SearchCatalogPage = (props) => {
                             <th>Item Type</th>
                         </tr>
                         {items.filter((item) =>
-                            item.name.toLowerCase().includes(query)
+                            item.name.toLowerCase().includes(query.toLowerCase())
                         ).map((item, index) => (
                             <tr key={index}>
                                 <td>{item.name}</td>
