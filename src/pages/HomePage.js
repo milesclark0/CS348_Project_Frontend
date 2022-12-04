@@ -39,30 +39,30 @@ const HomePage = (props) => {
   const [total, setTotal] = useState(0.0);
   const [errMsg, setErrMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
+  const [orderCount, setOrderCount] = useState(5);
 
   //TODO: Add useEffect to get items from api
-  
+
   const [items1, setItems] = useState([]);
 
   const getItems = async () => {
     let response = await api.getSearchCatalog();
     let data = await response.json();
     if (response.status === StatusCodes.OK) {
-    //Saves User Info
-        setItems(data)
+      //Saves User Info
+      setItems(data);
     }
   };
 
   useEffect(() => {
-      getItems();
+    getItems();
   }, []);
 
-  
-  const items = items1.map(t => ({
+  const items = items1.map((t) => ({
     item_id: t.id,
     name: t.name,
-    price: parseFloat(t.price)
-  }))
+    price: parseFloat(t.price),
+  }));
 
   const style = {
     position: "absolute",
@@ -110,9 +110,7 @@ const HomePage = (props) => {
         onChange={(e, value) => {
           const tempCartItems = [...cartItems];
           tempCartItems[props.index].name = value;
-          const foundItem = items.find(
-            (name) => name.name === value
-          )?.item_id;
+          const foundItem = items.find((name) => name.name === value)?.item_id;
           if (foundItem) {
             tempCartItems[props.index].item_id = foundItem;
           } else {
@@ -204,7 +202,6 @@ const HomePage = (props) => {
     });
     return tempItems;
   }
-
 
   return (
     <Box
@@ -315,27 +312,34 @@ const HomePage = (props) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {orders.map((order) => (
-              <TableRow
-                key={order.id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell>{order.id}</TableCell>
-                <TableCell>
-                  {new Date(order.date_time).toDateString()}
-                </TableCell>
-                <TableCell>
-                  {new Date(order.date_time).toLocaleTimeString("en-US", {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
-                </TableCell>
-                <TableCell>{order.total}</TableCell>
-              </TableRow>
-            ))}
+            {orders.map((order, index) => {
+              if(index+1 > orderCount){
+                return
+              }
+              return (
+                <TableRow
+                  key={order.id}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell>{order.id}</TableCell>
+                  <TableCell>
+                    {new Date(order.date_time).toDateString()}
+                  </TableCell>
+                  <TableCell>
+                    {new Date(order.date_time).toLocaleTimeString("en-US", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </TableCell>
+                  <TableCell>{order.total}</TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </TableContainer>
+      {orderCount < orders.length && <Button onClick={() => setOrderCount(orderCount + 5)}>Show More</Button>}
+      {orderCount >= orders.length && <Button onClick={() => setOrderCount(5)}>Show Less</Button>}
     </Box>
   );
 };
