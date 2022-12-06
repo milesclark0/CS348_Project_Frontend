@@ -1,3 +1,14 @@
+export async function changePassword(username, password, password2) {
+    alert('got here');
+    const requestOps = {
+      method: "POST",
+      headers: { "content-Type": "application/json" },
+      body: JSON.stringify({username: username, password: password, password2: password2})
+    }
+    return await fetch("/api/changePassword/", requestOps)
+
+}
+
 export async function login(user, pass) {
     const requestOps = {
       method: "POST",

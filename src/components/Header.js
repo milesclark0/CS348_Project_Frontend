@@ -30,6 +30,7 @@ const Header = (props) => {
           OrderThisChris
         </Typography>
         <Button onClick={searchCatalogPageRedirect} color="inherit">Search Catalog</Button>
+        {isLoggedIn && <Button color="inherit" onClick={(e) => navigate("/profile")}>Profile</Button>}
         {isLoggedIn && <Button color="inherit" onClick={(e) => logout(e)}>Logout</Button>}
       </Toolbar>
     </AppBar>

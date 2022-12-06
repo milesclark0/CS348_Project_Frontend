@@ -5,6 +5,7 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import HomePage from "./pages/HomePage";
 import CustomerProfile from "./objects/CustomerProfile";
+import ProfilePage from "./pages/ProfilePage";
 import { useState } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { themeOptions } from "./objects/themeOptions";
@@ -46,6 +47,14 @@ function App() {
                 <RegisterPage
                   loginChange={loginChange}
                   isLoggedIn={isLoggedIn}
+                />
+              }
+            />
+            <Route
+              path="/profile"
+              exact
+              element={
+                <ProfilePage
                 />
               }
             />
