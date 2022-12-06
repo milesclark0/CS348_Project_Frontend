@@ -10,10 +10,17 @@ import { useState } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { themeOptions } from "./objects/themeOptions";
 import SearchCatalogPage from "./pages/SearchCatalogPage";
+import ManagerProfile from "./objects/ManagerProfile";
+import EmployeeProfile from "./objects/EmployeeProfile";
+import HirePage from "./pages/HirePage";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(CustomerProfile.isLoggedIn());
-
+  const [isLoggedIn, setIsLoggedIn] = useState(CustomerProfile.isLoggedIn() || ManagerProfile.isLoggedIn() || EmployeeProfile.isLoggedIn());
+ 
+  //Miles this is whats wrong ^^^ and below
+  // I was originally going to use a variable to determine what type of account was loggined in so we could display stuff accordingly, such as 'Hire New Driver' which
+  // only the ManagerProfile should be able to see. 
+ 
   const loginChange = (value) => {
     setIsLoggedIn(value);
   };
@@ -55,6 +62,14 @@ function App() {
               exact
               element={
                 <ProfilePage
+                />
+              }
+            />
+            <Route
+              path="/hire"
+              exact
+              element={
+                <HirePage
                 />
               }
             />

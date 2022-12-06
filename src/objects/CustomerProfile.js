@@ -7,6 +7,7 @@ var CustomerProfile = (function () {
   var birth_date = "";
   var points = -1;
   var creation_date = "";
+  
 
   var getID = function () {
     return id;
@@ -32,6 +33,10 @@ var CustomerProfile = (function () {
   var getCreationDate = function () {
     return creation_date;
   };
+
+  var getUserType = function () {
+    return "User";
+  }
 
   var getObject = function () {
     return {
@@ -124,6 +129,7 @@ var CustomerProfile = (function () {
     getBirthDate: getBirthDate,
     getPoints: getPoints,
     getCreationDate: getCreationDate,
+    getUserType: getUserType,
     isLoggedIn: isLoggedIn,
 
     setID: setID,

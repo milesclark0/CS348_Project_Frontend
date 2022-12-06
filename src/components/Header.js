@@ -3,16 +3,29 @@ import CustomerProfile from "../objects/CustomerProfile";
 import { Link, useNavigate } from "react-router-dom";
 import { Toolbar, AppBar, IconButton, Typography, Button } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
+import ManagerProfile from "../objects/ManagerProfile";
+import EmployeeProfile from "../objects/EmployeeProfile";
 
 const Header = (props) => {
   const isLoggedIn = props.isLoggedIn;
+  const isManager = ManagerProfile.isLoggedIn();
   const navigate = useNavigate();
 
   const logout = (e) => {
     e.preventDefault();
-    //Clears customer data from memory
-    CustomerProfile.clear();
-    props.loginChange(CustomerProfile.isLoggedIn());
+
+    //Clears Current User From Logged In
+    if (CustomerProfile.isLoggedIn()) {
+      CustomerProfile.clear();
+      props.loginChange(CustomerProfile.isLoggedIn());
+    } else if (ManagerProfile.isLoggedIn()) {
+      ManagerProfile.clear();
+      props.loginChange(ManagerProfile.isLoggedIn());
+    } else if (EmployeeProfile.isLoggedIn()) {
+      EmployeeProfile.clear();
+      props.loginChange(EmployeeProfile.isLoggedIn());
+    }
+    
     navigate("/login");
   };
 
@@ -30,6 +43,7 @@ const Header = (props) => {
           OrderThisChris
         </Typography>
         <Button onClick={searchCatalogPageRedirect} color="inherit">Search Catalog</Button>
+        {isManager && <Button color="inherit" onClick={(e) => navigate("/hire")}>Hire Driver</Button>}
         {isLoggedIn && <Button color="inherit" onClick={(e) => navigate("/profile")}>Profile</Button>}
         {isLoggedIn && <Button color="inherit" onClick={(e) => logout(e)}>Logout</Button>}
       </Toolbar>
