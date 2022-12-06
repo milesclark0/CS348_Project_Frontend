@@ -3,10 +3,12 @@ import { StatusCodes } from "http-status-codes";
 import { Link } from "react-router-dom";
 import * as api from "../api/api";
 import CustomerProfile from "../objects/CustomerProfile";
+import ManagerProfile from "../objects/ManagerProfile";
 import { useNavigate } from "react-router-dom";
 import { Box, Stack } from "@mui/system";
 import { Avatar, Button, FormControlLabel, InputAdornment, TextField, Typography } from "@mui/material";
 import { LockOutlined } from "@mui/icons-material";
+import EmployeeProfile from "../objects/EmployeeProfile";
 
 
 const LoginPage = (props) => {
@@ -26,26 +28,58 @@ const LoginPage = (props) => {
     if (isLoggedIn) {
       return;
     }
-
     //Calls api
     let response = await api.login(username, password);
     let data = await response.json();
     if (response.status === StatusCodes.OK) {
       //Saves User Info
       console.log(data);
-      CustomerProfile.setAll(
-        data.id,
-        data.username,
-        data.name,
-        data.address,
-        data.phone,
-        data.birth_date,
-        data.points,
-        data.creation_date
-      );
-      setErrMsg("");
-      props.loginChange(CustomerProfile.isLoggedIn());
-      navigate("/");
+      if (data.user_type === "User") {
+        CustomerProfile.setAll(
+          data.id,
+          data.username,
+          data.name,
+          data.address,
+          data.phone,
+          data.birth_date,
+          data.points,
+          data.creation_date,
+          data.user_type
+        );
+        setErrMsg("");
+        props.loginChange(CustomerProfile.isLoggedIn());
+        navigate("/");
+
+      } else if (data.user_type === "Manager") {
+        ManagerProfile.setAll(
+          data.id,
+          data.username,
+          data.name,
+          data.zip,
+          data.phone,
+          data.birth_date,
+          data.hire_date,
+          data.user_type
+        );
+        setErrMsg("");
+        props.loginChange(ManagerProfile.isLoggedIn());
+        navigate("/");
+      
+        } else if (data.user_type === "Employee") {
+          EmployeeProfile.setAll(
+            data.id,
+            data.username,
+            data.name,
+            data.phone,
+            data.birth_date,
+            data.zip,
+            data.hire_date,
+            data.avg_rating
+          );
+          setErrMsg("");
+          props.loginChange(EmployeeProfile.isLoggedIn());
+          navigate("/");
+        }
     } else {
       setErrMsg(data.message);
       console.log(data);

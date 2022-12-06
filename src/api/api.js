@@ -1,5 +1,4 @@
 export async function changePassword(username, password, password2) {
-    alert('got here');
     const requestOps = {
       method: "POST",
       headers: { "content-Type": "application/json" },
@@ -17,6 +16,16 @@ export async function login(user, pass) {
     }
     return await fetch("/api/login/", requestOps)
 }
+
+export async function hire(user, pass, name, zip, phone, birth_date, manager) {
+  const requestOps = {
+    method: "POST",
+    headers: { "content-Type": "application/json" },
+    body: JSON.stringify({ username: user, password: pass, name: name, zip: zip, phone: phone, birth_date: birth_date, manager: manager}),
+  };
+  return await fetch("/api/hire/", requestOps);
+} 
+
 
 export async function register(user, pass, nm, add, phone, birth_d) {
   const requestOps = {

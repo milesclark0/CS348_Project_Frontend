@@ -3,8 +3,10 @@ import { StatusCodes } from "http-status-codes";
 import * as api from "../api/api";
 import { useNavigate } from "react-router-dom";
 import { Box } from "@mui/system";
-import {  Button, TextField } from "@mui/material";
+import {  Button, TextField, FormLabel } from "@mui/material";
 import CustomerProfile from "../objects/CustomerProfile";
+import ManagerProfile from "../objects/ManagerProfile";
+import EmployeeProfile from "../objects/EmployeeProfile";
 import Header from "../components/Header";
 
 
@@ -15,6 +17,10 @@ const ProfilePage = (props) => {
     const [errMsg, setErrMsg] = useState("");
     const isLoggedIn = props.isLoggedIn;
     const navigate = useNavigate();
+    const isManager = ManagerProfile.isLoggedIn() === true;
+    const isEmployee = EmployeeProfile.isLoggedIn() === true;
+
+    
 
      //clears error message on input change
     useEffect(() => {
@@ -23,8 +29,15 @@ const ProfilePage = (props) => {
 
     const changePassword = async (e) => {
         e.preventDefault();
-       
-        let username = CustomerProfile.getUsername();
+        let username = "";
+        if (CustomerProfile.isLoggedIn()) {
+            username = CustomerProfile.getUsername();
+        } else if (ManagerProfile.isLoggedIn()) {
+            username = ManagerProfile.getUsername();
+        } else if (EmployeeProfile.isLoggedIn()) {
+            username = EmployeeProfile.getUsername();
+        }
+        
         //Calls API function 'changePassword()'
         let response = await api.changePassword(username, password, password2);
         let data = await response.json();
@@ -47,6 +60,30 @@ const ProfilePage = (props) => {
         alignItems: "center",
       }}
     >
+    {
+        isManager === true &&
+        <FormLabel
+          sx={{
+            fontSize: 35,
+            fontWeight: 'bold',
+            marginBottom: 2
+          }}
+        >
+        Manager Mode
+        </FormLabel>
+    }
+        {
+        isEmployee === true &&
+        <FormLabel
+          sx={{
+            fontSize: 35,
+            fontWeight: 'bold',
+            marginBottom: 2
+          }}
+        >
+        Driver Dashboard
+        </FormLabel>
+    }
     <div>Change Your Password</div>
     <Box component="form" onSubmit={changePassword} noValidate sx={{ mt: 1 }}>
         <TextField
