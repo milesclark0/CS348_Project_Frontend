@@ -25,6 +25,8 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import Order from "../objects/Order";
+import { tableCellClasses } from "@mui/material";
+import { styled } from "@mui/material/styles";
 
 const HomePage = (props) => {
   const isLoggedIn = props.isLoggedIn;
@@ -40,6 +42,25 @@ const HomePage = (props) => {
   const [errMsg, setErrMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
   const [orderCount, setOrderCount] = useState(5);
+
+  const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    "&:nth-of-type(odd)": {
+      backgroundColor: theme.palette.action.hover,
+    },
+    // hide last border
+    "&:last-child td, &:last-child th": {
+      border: 0,
+    },
+  }));
+
+  const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+      borderColor: theme.palette.secondary.main,
+    },
+    [`&.${tableCellClasses.body}`]: {
+      fontSize: 14,
+    },
+  }));
 
   //TODO: Add useEffect to get items from api
 
@@ -143,9 +164,14 @@ const HomePage = (props) => {
         size="large"
         onClick={() => {
           const tempCartItems = [...cartItems];
+          const itemToDeletePrice =
+            items.find(
+              (item) => item.item_id === tempCartItems[props.index].item_id
+            )?.price * tempCartItems[props.index].quantity;
+          console.log(itemToDeletePrice);
           tempCartItems.splice(props.index, 1);
           setCartItems(tempCartItems);
-          setTotal(calculateTotal());
+          setTotal(total - itemToDeletePrice);
         }}
       >
         <Delete />
@@ -167,6 +193,9 @@ const HomePage = (props) => {
         setOpen(false);
         setErrMsg("");
         setSuccessMsg("Order successfully created!");
+        setCartItems([{ name: "", quantity: 1 }]);
+        setTotal(0);
+        setTip(0);
       } else {
         console.log(data);
         setErrMsg(data);
@@ -200,7 +229,7 @@ const HomePage = (props) => {
         cart_count: cartItem.quantity,
       });
     });
-    return tempItems;
+    return tempItems.filter((item) => item.item_id !== 0);
   }
 
   return (
@@ -301,23 +330,23 @@ const HomePage = (props) => {
           {errMsg}
         </Alert>
       )}
-      <TableContainer component={Paper} sx={{ width: "500px" }}>
+      <TableContainer component={Paper} sx={{ width: "1000px" }}>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell>Date</TableCell>
-              <TableCell>Time</TableCell>
-              <TableCell>Total</TableCell>
+              <StyledTableCell>ID</StyledTableCell>
+              <StyledTableCell>Date</StyledTableCell>
+              <StyledTableCell>Time</StyledTableCell>
+              <StyledTableCell>Total</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {orders.map((order, index) => {
-              if(index+1 > orderCount){
-                return
+              if (index + 1 > orderCount) {
+                return;
               }
               return (
-                <TableRow
+                <StyledTableRow
                   key={order.id}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
@@ -332,14 +361,20 @@ const HomePage = (props) => {
                     })}
                   </TableCell>
                   <TableCell>{order.total}</TableCell>
-                </TableRow>
+                </StyledTableRow>
               );
             })}
           </TableBody>
         </Table>
       </TableContainer>
-      {orderCount < orders.length && <Button onClick={() => setOrderCount(orderCount + 5)}>Show More</Button>}
-      {orderCount >= orders.length && <Button onClick={() => setOrderCount(5)}>Show Less</Button>}
+      {orderCount < orders.length && (
+        <Button onClick={() => setOrderCount(orderCount + 5)}>
+          Show More...
+        </Button>
+      )}
+      {orderCount >= orders.length && orders.length > 5 && (
+        <Button onClick={() => setOrderCount(5)}>Collapse</Button>
+      )}
     </Box>
   );
 };
