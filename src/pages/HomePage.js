@@ -83,7 +83,9 @@ const HomePage = (props) => {
     item_id: t.id,
     name: t.name,
     price: parseFloat(t.price),
+    count: t.count
   }));
+
 
   const style = {
     position: "absolute",
@@ -121,6 +123,7 @@ const HomePage = (props) => {
     }
   }, [isLoggedIn]);
 
+  // debugger;
   const CartItem = (props) => (
     <Stack spacing={2} direction="row" mb={2}>
       <Autocomplete
@@ -183,9 +186,24 @@ const HomePage = (props) => {
   const handleOrderSubmit = async () => {
     Order.setAll(CustomerProfile.getID(), null, total, tip);
     Order.setItems(refactorItems());
+    
+    let validQuantity = true;
+    cartItems.forEach((cartItem) => {
+      items.forEach((item) => {
+        if (cartItem.item_id === item.item_id) {
+          if (parseFloat(cartItem.quantity) > item.count) {
+            validQuantity = false;
+            console.log('invalid order')
+          }
+        }
+      });
+    });
+    
+
+  
 
     //call api to create order
-    if (Order.isValid()) {
+    if (Order.isValid() && validQuantity) {
       let response = await api.createOrder(Order.getObject());
       let data = await response.json();
       if (response.status === StatusCodes.OK) {
@@ -196,12 +214,14 @@ const HomePage = (props) => {
         setCartItems([{ name: "", quantity: 1 }]);
         setTotal(0);
         setTip(0);
+        // need to reduce the quantity in the database
       } else {
         console.log(data);
         setErrMsg(data);
         setSuccessMsg("");
       }
     } else {
+      alert('Your order is invalid');
       console.log("invalid");
     }
   };
@@ -214,11 +234,13 @@ const HomePage = (props) => {
       items.forEach((item) => {
         if (cartItem.name === item.name) {
           total += cartItem.quantity * item.price;
+          console.log(cartItem.quantity);
         }
       });
     });
     return Number(total.toFixed(2));
   }
+
 
   //Refactors items in cart to match api
   function refactorItems() {
@@ -231,6 +253,8 @@ const HomePage = (props) => {
     });
     return tempItems.filter((item) => item.item_id !== 0);
   }
+
+  
 
   return (
     <Box
