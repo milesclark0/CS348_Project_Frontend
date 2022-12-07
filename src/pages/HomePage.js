@@ -185,8 +185,7 @@ const HomePage = (props) => {
   //handlers
   const handleOrderSubmit = async () => {
     Order.setAll(CustomerProfile.getID(), null, total, tip);
-    Order.setItems(refactorItems());
-    
+    Order.setItems(refactorItems());   
     let validQuantity = true;
     cartItems.forEach((cartItem) => {
       items.forEach((item) => {
@@ -213,15 +212,14 @@ const HomePage = (props) => {
         setSuccessMsg("Order successfully created!");
         setCartItems([{ name: "", quantity: 1 }]);
         setTotal(0);
-        setTip(0);
-        // need to reduce the quantity in the database
+        setTip(0); 
       } else {
         console.log(data);
         setErrMsg(data);
         setSuccessMsg("");
       }
     } else {
-      alert('Your order is invalid');
+      setErrMsg("Requested Quanity Exceeds Current Stock!")
       console.log("invalid");
     }
   };
