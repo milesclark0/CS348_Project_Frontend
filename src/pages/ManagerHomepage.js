@@ -59,7 +59,7 @@ const ManagerHomepage = (props) => {
     let data = await response.json();
     if (response.status === StatusCodes.OK) {
       //Saves User Info
-      console.log(data);
+      //console.log(data);
       setEmployees(data);
     }
   };
@@ -69,7 +69,7 @@ const ManagerHomepage = (props) => {
     let response = await api.fireEmployee(employee.id);
     if (response.status === StatusCodes.OK) {
         //Saves User Info
-        console.log("Employee deleted");
+        //console.log("Employee deleted");
         const newEmployees = [...employees]
         newEmployees.splice(index, 1);
         setEmployees(newEmployees);
@@ -115,7 +115,7 @@ const ManagerHomepage = (props) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {employees.map((employee, index) => {
+            {employees.length > 0 ? employees.map((employee, index) => {
               return (
                 <StyledTableRow
                   key={employee.id}
@@ -136,7 +136,7 @@ const ManagerHomepage = (props) => {
                   </TableCell>
                 </StyledTableRow>
               );
-            })}
+            }): <StyledTableRow><StyledTableCell align="center" colSpan={9}>No Employees</StyledTableCell></StyledTableRow>}
           </TableBody>
         </Table>
       </TableContainer>
