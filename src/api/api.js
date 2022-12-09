@@ -58,3 +58,15 @@ export async function getSearchCatalog() {
   const response =  await fetch("/api/getItems")
   return response;
 }
+
+export async function fireEmployee(employee_id) {
+    const requestOps = {
+      method: "DELETE",
+      headers: { "content-Type": "application/json" },
+    };
+  return await fetch(`api/fireEmployee/${employee_id}`, requestOps);
+}
+
+export async function getEmployees(manager_id) {
+  return await fetch(`api/getEmployees/${manager_id}`);
+}

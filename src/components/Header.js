@@ -36,7 +36,13 @@ const Header = (props) => {
   return (
     <AppBar position="static" color="primary" sx={{mb: '16px'}}>
       <Toolbar>
-        <IconButton size="large" edge="start" color="inherit" onClick={() => navigate("/")}>
+        <IconButton size="large" edge="start" color="inherit" onClick={() => {
+          if (isManager) {
+            navigate("/ManagerHomePage");
+          } else {
+            navigate("/");
+          }
+        }}>
           <HomeIcon />
         </IconButton>
         <Typography variant="h6" component="div" sx={{flexGrow: 1}}>

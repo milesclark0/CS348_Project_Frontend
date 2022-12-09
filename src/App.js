@@ -13,14 +13,19 @@ import SearchCatalogPage from "./pages/SearchCatalogPage";
 import ManagerProfile from "./objects/ManagerProfile";
 import EmployeeProfile from "./objects/EmployeeProfile";
 import HirePage from "./pages/HirePage";
+import ManagerHomepage from "./pages/ManagerHomepage";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(CustomerProfile.isLoggedIn() || ManagerProfile.isLoggedIn() || EmployeeProfile.isLoggedIn());
- 
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    CustomerProfile.isLoggedIn() ||
+      ManagerProfile.isLoggedIn() ||
+      EmployeeProfile.isLoggedIn()
+  );
+
   //Miles this is whats wrong ^^^ and below
   // I was originally going to use a variable to determine what type of account was loggined in so we could display stuff accordingly, such as 'Hire New Driver' which
-  // only the ManagerProfile should be able to see. 
- 
+  // only the ManagerProfile should be able to see.
+
   const loginChange = (value) => {
     setIsLoggedIn(value);
   };
@@ -57,27 +62,23 @@ function App() {
                 />
               }
             />
-            <Route
-              path="/profile"
-              exact
-              element={
-                <ProfilePage
-                />
-              }
-            />
-            <Route
-              path="/hire"
-              exact
-              element={
-                <HirePage
-                />
-              }
-            />
+            <Route path="/profile" exact element={<ProfilePage />} />
+            <Route path="/hire" exact element={<HirePage />} />
             <Route
               path="/SearchCatalogPage"
               exact
               element={
                 <SearchCatalogPage
+                  loginChange={loginChange}
+                  isLoggedIn={isLoggedIn}
+                />
+              }
+            />{" "}
+            <Route
+              path="/ManagerHomepage"
+              exact
+              element={
+                <ManagerHomepage
                   loginChange={loginChange}
                   isLoggedIn={isLoggedIn}
                 />

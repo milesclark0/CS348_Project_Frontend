@@ -365,7 +365,7 @@ const HomePage = (props) => {
           <TableBody>
             {orders.map((order, index) => {
               if (index + 1 > orderCount) {
-                return;
+                return null;
               }
               return (
                 <StyledTableRow

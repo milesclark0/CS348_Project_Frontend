@@ -63,7 +63,7 @@ const LoginPage = (props) => {
         );
         setErrMsg("");
         props.loginChange(ManagerProfile.isLoggedIn());
-        navigate("/");
+        navigate("/ManagerHomepage");
       
         } else if (data.user_type === "Employee") {
           EmployeeProfile.setAll(
