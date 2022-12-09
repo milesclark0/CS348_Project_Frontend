@@ -45,7 +45,7 @@ const HirePage = (props) => {
     let data = await response.json();
     if (response.status === StatusCodes.OK) {
       setErrMsg("");
-      navigate("/profile");
+      navigate("/ManagerHomepage");
     } else {
       setErrMsg(JSON.stringify(data));
       console.log(data);

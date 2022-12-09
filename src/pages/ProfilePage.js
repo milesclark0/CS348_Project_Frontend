@@ -44,7 +44,13 @@ const ProfilePage = (props) => {
         if (response.status === StatusCodes.OK) {
           //Saves User Info
           console.log("Changed Password Successfully");
-          navigate("/");
+          if (ManagerProfile.isLoggedIn()) {
+            navigate("/ManagerHomepage");
+          } else if (EmployeeProfile.isLoggedIn()) {
+            navigate("/");
+          } else {
+            navigate("/");
+          }
         } else {
           setErrMsg(data.message);
           console.log(data);
