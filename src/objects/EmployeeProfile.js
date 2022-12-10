@@ -151,7 +151,7 @@ var EmployeeProfile = (function () {
       setUsername: setUsername,
       setName: setName,
       setPhone: setPhone,
-      setZip, setZip,
+      setZip: setZip,
       setHireDate: setHireDate,
       setBirthDate: setBirthDate,
       setAvgRating: setAvgRating,

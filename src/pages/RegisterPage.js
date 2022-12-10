@@ -98,7 +98,7 @@ const LoginPage = (props) => {
           <TextField
             id="nameTextBox"
             required
-            label="name"
+            label="Name"
             autoComplete="name"
             fullWidth
             onChange={(e) => setName(e.target.value)}
@@ -108,7 +108,7 @@ const LoginPage = (props) => {
             id="addressTextBox"
             required
             fullWidth
-            label="address"
+            label="Address"
             onChange={(e) => setAddress(e.target.value)}
             error={errMsg.includes("address")}
           />
@@ -118,7 +118,7 @@ const LoginPage = (props) => {
             id="phoneTextBox"
             required
             fullWidth
-            label="phone"
+            label="Phone"
             max={10}
             onChange={(e) => setPhone(e.target.value)}
             error={errMsg.includes("phone")}
@@ -126,6 +126,7 @@ const LoginPage = (props) => {
           <TextField
             required
             fullWidth
+            label="Birth Date"
             id="birthDateTextBox"
             type={"date"}
             onChange={(e) => setBirthDate(e.target.value)}

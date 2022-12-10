@@ -70,3 +70,13 @@ export async function fireEmployee(employee_id) {
 export async function getEmployees(manager_id) {
   return await fetch(`api/getEmployees/${manager_id}`);
 }
+
+export async function getOrderItems(order_id) {
+  console.log("IN GET ORDERS " + order_id)
+  const requestOps = {
+    method: "POST",
+    headers: { "content-Type": "application/json" },
+    body: JSON.stringify(order_id),
+  };
+  return await fetch("api/getOrderItems/", requestOps);
+}

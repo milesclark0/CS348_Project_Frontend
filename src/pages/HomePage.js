@@ -43,6 +43,11 @@ const HomePage = (props) => {
   const [successMsg, setSuccessMsg] = useState("");
   const [orderCount, setOrderCount] = useState(5);
 
+  const [viewOrder, setViewOrder] = useState(false);
+  const [orderID, setOrderID] = useState(0);
+  const [orderItems, setOrderItems] = useState([])
+
+
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
     "&:nth-of-type(odd)": {
       backgroundColor: theme.palette.action.hover,
@@ -197,9 +202,6 @@ const HomePage = (props) => {
         }
       });
     });
-    
-
-  
 
     //call api to create order
     if (Order.isValid() && validQuantity) {
@@ -223,6 +225,24 @@ const HomePage = (props) => {
       console.log("invalid");
     }
   };
+
+  const handleViewOrderItems = async (orderIDParam) => {
+    setViewOrder(true);
+    let response = await api.getOrderItems(orderIDParam)
+    let data = await  response.json()
+    if (response.status === StatusCodes.OK) {
+      setOrderItems(data);
+      console.log(data)
+    }
+  };
+
+  const OrderItem = (props) => (
+    <Stack sx={{ width: 300 }} spacing={2} direction="row" mb={2} justifyConent="space-between">
+        <Typography>Item: {props.item.item}</Typography>
+        <Typography align="right">Price: {props.item.price}</Typography>
+    </Stack>
+  )
+
 
   //helpers
   //Calculates total price of order based on items in cart
@@ -298,6 +318,16 @@ const HomePage = (props) => {
             }}
           ></TextField>
           <Typography>Total: ${Number((total + tip).toFixed(2))}</Typography>
+          {errMsg && (
+        <Alert
+          severity="error"
+          sx={{ width: "500px", marginTop: 2 }}
+          onClose={() => setErrMsg("")}
+        >
+          {errMsg}
+        </Alert>
+      )}
+      <br/>
           <Stack
             spacing={2}
             direction="row"
@@ -321,6 +351,22 @@ const HomePage = (props) => {
           </Stack>
         </Box>
       </Modal>
+      <Modal on open={viewOrder} onClose={() => setViewOrder(false)}>
+        <Box sx={style}>
+          <Typography variant="h6">View Order {orderID} Items </Typography>
+          {orderItems.map((orderItem, index) => {
+            return <OrderItem item={orderItem} key={index} index={index} />;
+          })}
+          <Button
+              variant="outlined"
+              color="secondary"
+              onClick={() => setViewOrder(false)}
+          >
+            Close
+          </Button>
+        </Box>
+      </Modal>
+
       <Stack spacing={2} direction="row" width={"500px"}>
         <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
           Orders
@@ -343,15 +389,6 @@ const HomePage = (props) => {
           {successMsg}
         </Alert>
       )}
-      {errMsg && (
-        <Alert
-          severity="error"
-          sx={{ width: "500px", marginTop: 2 }}
-          onClose={() => setErrMsg("")}
-        >
-          {errMsg}
-        </Alert>
-      )}
       <TableContainer component={Paper} sx={{ width: "1000px" }}>
         <Table>
           <TableHead>
@@ -360,6 +397,7 @@ const HomePage = (props) => {
               <StyledTableCell>Date</StyledTableCell>
               <StyledTableCell>Time</StyledTableCell>
               <StyledTableCell>Total</StyledTableCell>
+              <StyledTableCell>Items</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -383,6 +421,19 @@ const HomePage = (props) => {
                     })}
                   </TableCell>
                   <TableCell>{order.total}</TableCell>
+                  <TableCell>
+                    <Button
+                      variant="outlined"
+                      color="secondary"
+                      onClick={() => {
+                        setOrderID(order.id);
+
+                        handleViewOrderItems(order.id);
+                      }}
+                    >
+                    View
+                    </Button>
+                  </TableCell>
                 </StyledTableRow>
               );
             })}
