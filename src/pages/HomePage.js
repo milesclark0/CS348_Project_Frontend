@@ -367,7 +367,7 @@ const HomePage = (props) => {
       </Modal>
       <Modal on open={viewOrder} onClose={() => setViewOrder(false)}>
         <Box sx={style}>
-          <Typography variant="h6">View Order {orderID} Items </Typography>
+        <Typography variant="h6">View Order {orderID} Items </Typography>
           <TableContainer component={Paper} sx={{ width: "500px" }}>
           <Table>
           <TableHead>
