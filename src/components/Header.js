@@ -9,6 +9,7 @@ import EmployeeProfile from "../objects/EmployeeProfile";
 const Header = (props) => {
   const isLoggedIn = props.isLoggedIn;
   const isManager = ManagerProfile.isLoggedIn();
+  const isEmployee = EmployeeProfile.isLoggedIn();
   const navigate = useNavigate();
 
   const logout = (e) => {
@@ -39,6 +40,8 @@ const Header = (props) => {
         <IconButton size="large" edge="start" color="inherit" onClick={() => {
           if (isManager) {
             navigate("/ManagerHomePage");
+          } else if (isEmployee) {
+            navigate("/EmployeeHomePage")
           } else {
             navigate("/");
           }
@@ -49,6 +52,7 @@ const Header = (props) => {
           OrderThisChris
         </Typography>
         <Button onClick={searchCatalogPageRedirect} color="inherit">Search Catalog</Button>
+        {isEmployee && <Button color="inherit" onClick={(e) => navigate("/openJobs")}>Open Jobs</Button>}
         {isManager && <Button color="inherit" onClick={(e) => navigate("/hire")}>Hire Driver</Button>}
         {isLoggedIn && <Button color="inherit" onClick={(e) => navigate("/profile")}>Profile</Button>}
         {isLoggedIn && <Button color="inherit" onClick={(e) => logout(e)}>Logout</Button>}

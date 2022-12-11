@@ -71,6 +71,14 @@ export async function getEmployees(manager_id) {
   return await fetch(`api/getEmployees/${manager_id}`);
 }
 
+export async function getJobs(employee_id) {
+  return await fetch(`api/getJobs/${employee_id}`);
+}
+
+export async function getOpenJobs() {
+    return await fetch('api/getOpenJobs')
+}
+
 export async function getOrderItems(order_id) {
   console.log("IN GET ORDERS " + order_id)
   const requestOps = {
@@ -89,5 +97,15 @@ export async function addRating(data) {
       body: JSON.stringify(data)
   };
   return await fetch("api/addRating/", requestOps)
-  }
+}
+
+export async function acceptJob(data) {
+  const requestOps = {
+      method: "POST",
+      headers: {"content-Type": "application/json"},
+      body: JSON.stringify(data)
+  };
+  return await fetch("api/acceptJob/", requestOps)
+}
+
 

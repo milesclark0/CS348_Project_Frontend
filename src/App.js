@@ -14,6 +14,8 @@ import ManagerProfile from "./objects/ManagerProfile";
 import EmployeeProfile from "./objects/EmployeeProfile";
 import HirePage from "./pages/HirePage";
 import ManagerHomepage from "./pages/ManagerHomepage";
+import EmployeeHomepage from "./pages/EmployeeHomepage";
+import OpenJobs from "./pages/OpenJobs";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(
@@ -84,6 +86,16 @@ function App() {
                 />
               }
             />
+            <Route
+                path="/EmployeeHomepage"
+                exact
+                element={
+                    <EmployeeHomepage
+                        loginChange={loginChange}
+                        isLoggedIn={isLoggedIn}/>
+                }
+                />
+                <Route path="/openJobs" exact element={<OpenJobs/>}/>
           </Routes>
         </div>
       </BrowserRouter>

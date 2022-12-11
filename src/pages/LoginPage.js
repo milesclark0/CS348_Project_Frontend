@@ -78,7 +78,7 @@ const LoginPage = (props) => {
           );
           setErrMsg("");
           props.loginChange(EmployeeProfile.isLoggedIn());
-          navigate("/");
+          navigate("/EmployeeHomepage");
         }
     } else {
       setErrMsg(data.message);
