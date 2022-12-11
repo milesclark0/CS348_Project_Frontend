@@ -32,7 +32,6 @@ const HirePage = (props) => {
 
     //Calls api
     const manager = ManagerProfile.getID();
-    alert(manager);
     let response = await api.hire(
       username,
       password,

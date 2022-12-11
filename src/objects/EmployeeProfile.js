@@ -10,8 +10,7 @@ var EmployeeProfile = (function () {
     var hire_date = "";
 
     var avg_rating = "";
-    // var manager = new ManagerProfile();
-    
+    var manager = "";
   
     var getID = function () {
       return id;
@@ -40,9 +39,9 @@ var EmployeeProfile = (function () {
     var getAvgRating = function () {
       return avg_rating;
     }
-    // var getManager = function () {
-    //   return manager;
-    // }
+    var getManager = function () {
+      return manager;
+    }
   
     var getObject = function () {
       return {
@@ -55,7 +54,7 @@ var EmployeeProfile = (function () {
         userType: "User",
         hire_date: hire_date,
         avg_rating: avg_rating, 
-        // manager: manager
+        manager: manager
       };
     };
     
@@ -96,9 +95,6 @@ var EmployeeProfile = (function () {
     var setAvgRating = function(new_avg_rating) {
       avg_rating = new_avg_rating;
     }
-    // var setManager = function(new_manager) {
-    //   manager = new_manager;
-    // }
     var setAll = function (
       new_ID,
       new_username,
@@ -108,7 +104,6 @@ var EmployeeProfile = (function () {
       new_zip,
       new_hire_date,
       new_avg_rating,
-    //   new_manager
     ) {
       id = new_ID;
       username = new_username;
@@ -118,7 +113,6 @@ var EmployeeProfile = (function () {
       zip = new_zip;
       hire_date = new_hire_date;
       avg_rating = new_avg_rating;
-    //   manager = new_manager;
       isLoggedIn = true;
     };
   
@@ -130,7 +124,7 @@ var EmployeeProfile = (function () {
       birth_date = "";
       zip = "";
       hire_date = "";
-    //   manager = "";
+      manager = "";
       avg_rating = "";
     };
   
@@ -144,7 +138,7 @@ var EmployeeProfile = (function () {
       getZip: getZip,
       getHireDate: getHireDate,
       getAvgRating: getAvgRating,
-    
+      getManager: getManager,    
       isLoggedIn: isLoggedIn,
   
       setID: setID,
