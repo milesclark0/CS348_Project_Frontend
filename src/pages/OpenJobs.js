@@ -61,7 +61,7 @@ const OpenJobs = (props) => {
   const getOpenJobs = async () => {
     let response = await api.getOpenJobs();
     let data = await response.json();
-    console.log(data)
+    console.table(data)
     if (response.status === StatusCodes.OK) {
 
       setJobs(data);
