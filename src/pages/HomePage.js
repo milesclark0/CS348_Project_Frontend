@@ -22,6 +22,10 @@ import {
   Autocomplete,
   InputAdornment,
   Alert,
+    FormControl,
+    InputLabel,
+    MenuItem,
+    Select
 } from "@mui/material";
 import { Box } from "@mui/system";
 import Order from "../objects/Order";
@@ -45,7 +49,8 @@ const HomePage = (props) => {
 
   const [viewOrder, setViewOrder] = useState(false);
   const [orderID, setOrderID] = useState(0);
-  const [orderItems, setOrderItems] = useState([])
+  const [orderItems, setOrderItems] = useState([]);
+  const [itemRating, setItemRating] = useState(0);
 
 
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -166,7 +171,7 @@ const HomePage = (props) => {
           setCartItems(tempCartItems);
           setTotal(calculateTotal());
         }}
-      ></TextField>
+      > </TextField>
       <IconButton
         disableTouchRipple
         size="large"
@@ -190,7 +195,7 @@ const HomePage = (props) => {
   //handlers
   const handleOrderSubmit = async () => {
     Order.setAll(CustomerProfile.getID(), null, total, tip);
-    Order.setItems(refactorItems());   
+    Order.setItems(refactorItems());
     let validQuantity = true;
     cartItems.forEach((cartItem) => {
       items.forEach((item) => {
@@ -214,7 +219,7 @@ const HomePage = (props) => {
         setSuccessMsg("Order successfully created!");
         setCartItems([{ name: "", quantity: 1 }]);
         setTotal(0);
-        setTip(0); 
+        setTip(0);
       } else {
         console.log(data);
         setErrMsg(data);
@@ -236,12 +241,22 @@ const HomePage = (props) => {
     }
   };
 
-  const OrderItem = (props) => (
-    <Stack sx={{ width: 300 }} spacing={2} direction="row" mb={2} justifyConent="space-between">
-        <Typography>Item: {props.item.item}</Typography>
-        <Typography align="right">Price: {props.item.price}</Typography>
-    </Stack>
-  )
+  const handleItemRatingChange = (event) => {
+      setItemRating(event.target.value);
+  }
+
+  const handleAddRating = async (itemIDParam, ratingParam, custIDParam) => {
+      console.log(itemIDParam, ratingParam, custIDParam)
+      let today = new Date().toLocaleDateString()
+      let data = {orderID: orderID, rating: ratingParam, customerID: custIDParam, date: today, itemID: itemIDParam}
+      console.log(data)
+      let response = await api.addRating(data)
+      let returnData = await response.json()
+      if (response.status === StatusCodes.OK) {
+          console.log(returnData)
+      }
+
+  }
 
 
   //helpers
@@ -272,7 +287,6 @@ const HomePage = (props) => {
     return tempItems.filter((item) => item.item_id !== 0);
   }
 
-  
 
   return (
     <Box
@@ -316,7 +330,7 @@ const HomePage = (props) => {
                 <InputAdornment position="start">$</InputAdornment>
               ),
             }}
-          ></TextField>
+          > </TextField>
           <Typography>Total: ${Number((total + tip).toFixed(2))}</Typography>
           {errMsg && (
         <Alert
@@ -354,9 +368,59 @@ const HomePage = (props) => {
       <Modal on open={viewOrder} onClose={() => setViewOrder(false)}>
         <Box sx={style}>
           <Typography variant="h6">View Order {orderID} Items </Typography>
-          {orderItems.map((orderItem, index) => {
-            return <OrderItem item={orderItem} key={index} index={index} />;
-          })}
+          <TableContainer component={Paper} sx={{ width: "500px" }}>
+          <Table>
+          <TableHead>
+            <TableRow>
+              <StyledTableCell>Item</StyledTableCell>
+              <StyledTableCell>Price</StyledTableCell>
+              <StyledTableCell>Rate</StyledTableCell>
+              <StyledTableCell>Submit</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {orderItems.map((orderItem, index) => {
+             return (
+                <StyledTableRow
+                  key={orderItem.id}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell>{orderItem.item}</TableCell>
+                  <TableCell>{orderItem.price}</TableCell>
+                  <TableCell>
+                    <FormControl fullWidth>
+                        <InputLabel id="demo-simple-select-label">1-5</InputLabel>
+                            <Select labelId="demo-simple-select-label"
+                                    id="demo-simple-select"
+                                    value={itemRating}
+                                    label="Rating"
+                                    onChange={handleItemRatingChange}>
+                                <MenuItem value={1}>1</MenuItem>
+                                <MenuItem value={2}>2</MenuItem>
+                                <MenuItem value={3}>3</MenuItem>
+                                <MenuItem value={4}>4</MenuItem>
+                                <MenuItem value={5}>5</MenuItem>
+                            </Select>
+                    </FormControl>
+                  </TableCell>
+                  <TableCell>
+                    <Button
+                      variant="outlined"
+                      color="secondary"
+                      onClick={() => {
+                          handleAddRating(orderItem.id, itemRating, CustomerProfile.getID())
+                      }}
+                    >
+                    Rate
+                    </Button>
+                  </TableCell>
+                </StyledTableRow>
+              );
+            })}
+          </TableBody>
+          </Table>
+        </TableContainer>
+          <br/>
           <Button
               variant="outlined"
               color="secondary"

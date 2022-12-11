@@ -80,3 +80,14 @@ export async function getOrderItems(order_id) {
   };
   return await fetch("api/getOrderItems/", requestOps);
 }
+
+
+export async function addRating(data) {
+  const requestOps = {
+      method: "POST",
+      headers: {"content-Type": "application/json"},
+      body: JSON.stringify(data)
+  };
+  return await fetch("api/addRating/", requestOps)
+  }
+
