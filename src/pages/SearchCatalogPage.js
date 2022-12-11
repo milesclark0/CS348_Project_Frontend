@@ -24,6 +24,7 @@ import {
   Alert,
   Select,
   MenuItem,
+  Rating,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { tableCellClasses } from "@mui/material";
@@ -217,7 +218,7 @@ const SearchCatalogPage = (props) => {
                     <StyledTableRow key={index}>
                       <TableCell>{item.name}</TableCell>
                       <TableCell>${item.price}</TableCell>
-                      <TableCell>{item.rating}</TableCell>
+                      <TableCell><Rating value={item.rating} readOnly></Rating></TableCell>
                       <TableCell>{item.count}</TableCell>
                       <TableCell>{item.type}</TableCell>
                     </StyledTableRow>
